@@ -1,6 +1,6 @@
 library(rtracklayer)
 library(GenomicFeatures)
-library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+library(TxDb.Mmusculus.UCSC.mm9.knownGene)
 library(CAGEr)
 library(GenomicRanges)
 library(plyr)
@@ -48,8 +48,7 @@ quantilePositions(ce, clusters = "tagClusters", qLow = qlow, qUp = qup)
 
 # mouse genes
 
-location <- "/Users/sigalova/Desktop/SMTB/broad_and_narrow/data/MOUSE/model/mm9.dms"
-txdb <- makeTxDbFromGFF(file = location, format = "gtf")
+txdb = TxDb.Mmusculus.UCSC.mm9.knownGene
 columns(txdb)
 
 prom <- promoters(txdb, upstream = 250, downstream = 250, columns = c("TXID", "GENEID"))
@@ -74,7 +73,7 @@ myfun = function(prom, sampl, ce, qup = 0.9, qlow = 0.1, min = 1) {
     names(df_res)[15:19] = paste(names(df_res)[15:19], "gene", sep = "_")
 
     df_res %>%
-      filter(tpm > 10, nchar(GENEID) != 0) %>%
+      filter(tpm > 10, !is.na(as.numeric(GENEID))) %>%
       select(interquantile_width, cluster, seqnames, start, end, GENEID, tpm) %>%
       unique()
     
