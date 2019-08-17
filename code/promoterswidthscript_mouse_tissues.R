@@ -20,14 +20,14 @@ r1 = r %>% filter(type == "tissue")
 
 
 samples = r %>% filter(type == "tissue") %>% select(sample) %>% unlist(use.names = FALSE)
-samples = samples[c(10,16,23,132)]
+samples = samples[c(2,10,16,23,132)]
 
 ce <- importPublicData(source = "FANTOM5", dataset = "mouse", sample = samples)
 
 plotReverseCumulatives(ce, fitInRange = c(10,10000), values = "raw", onePlot = TRUE)
 
 normalizeTagCount(ce, method = "powerLaw", fitInRange = c(5, 1000), 
-                  alpha = 1.35, T = 10 ^ 6)
+                  alpha = 1.32, T = 10 ^ 6)
 
 
 threshold <- 10
